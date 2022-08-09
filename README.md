@@ -14,3 +14,6 @@ Follow the steps to run this project:
 5. python manage.py runserver
 
 then run http://localhost:8000 on your browser.
+
+
+Postman collection of the project: https://www.getpostman.com/collections/9371b6bc56762391e6cf
