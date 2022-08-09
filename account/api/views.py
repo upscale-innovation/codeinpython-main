@@ -22,8 +22,12 @@ from ..generate_otp import generateOTP
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-account_sid = 'ACf11311c653901f63e0a2609b52f65de6'
-auth_token = 'dcdc0616c911d335f6d53fca043f7612'
+try:  
+   account_sid = os.getenv('account_sid')
+   auth_token =  os.getenv('SECRET_KEY')
+except KeyError: 
+   print("Please set the environment variable of account_sid and auth_token")
+   sys.exit(1)
 
 
 class UserCreateAPIView(CreateAPIView):
