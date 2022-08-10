@@ -8,7 +8,7 @@ from datetime import datetime
 from comments.api.serializers import *
 from comments.models import *
 
-
+#Post Serializer
 class CreatePostSerializer(ModelSerializer):
     title = serializers.CharField(error_messages={'required': "title can't be blank"})
     description = serializers.CharField(error_messages={'required': "description can't be blank"})
@@ -79,4 +79,24 @@ class PostListSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+
+
+#Bookmark serializer
+class BookmarkListSerializer(ModelSerializer):
+    post_title = SerializerMethodField()
+    post_description = SerializerMethodField()
+    post_id = SerializerMethodField()
+    def get_post_title(self, instance):
+        if instance.post.title:
+            return instance.post.title
+    def get_post_description(self, instance):
+        if instance.post.description:
+            return instance.post.description
+    def get_post_id(self, instance):
+        if instance.post.id:
+            return instance.post.id
+    class Meta:
+        model = PostBookmark
+        fields = "__all__"
+
 
