@@ -6,8 +6,8 @@ from account.exception import APIException400
 from django.utils.timezone import now
 from datetime import datetime
 from notification.models import *
-
-
+from django.conf import settings
+from django.core.mail import send_mail
 
 class CreateCommentSerializer(ModelSerializer):
     title = serializers.CharField(error_messages={'required': "title can't be blank"})
@@ -37,6 +37,14 @@ class CreateCommentSerializer(ModelSerializer):
                 notification = NormalNotification.objects.create(
                 notification_by=user, notification_for=obj.post.created_by, notification_type='comment', 
                 context=context, comment_id=obj.id)
+                # from_email = settings.FROM_EMAIL
+                # recipient_email = 'satyajitbarik.dev@gmail.com'
+                # subject = context
+                # message = 'Comment: {}'.format(title)
+                # try:
+                #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                # except Exception as e:
+                #     raise APIException400({"message": e, 'success': 'False'})
         except Exception as e:
             raise APIException400({"message":e, "status": "False"})
         return validated_data

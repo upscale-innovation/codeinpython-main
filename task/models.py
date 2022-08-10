@@ -53,7 +53,7 @@ class PostImage(models.Model):
 class PostLike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_like')
     liked_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_by')
-    created = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(default=now)
 
     class Meta:
         unique_together = ('post', 'liked_by')
@@ -62,7 +62,7 @@ class PostLike(models.Model):
 class PostBookmark(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_bookmark')
     bookmark_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmark_by')
-    created = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(default=now)
 
     class Meta:
         unique_together = ('post', 'bookmark_by')
