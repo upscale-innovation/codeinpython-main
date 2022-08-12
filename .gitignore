@@ -140,6 +140,7 @@ dmypy.json
 
 # dependencies
 main-fronted/node_modules
+./main-fronted/node_modules
 /.pnp
 .pnp.js
 
