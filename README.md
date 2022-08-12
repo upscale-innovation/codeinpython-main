@@ -1,23 +1,38 @@
 # CODEINPYTHON
+------
 
+## Backend
 Follow the steps to run this project:
 
 1. git clone https://github.com/codeinpython-org/codeinpython-main.git
 
-2. python -m venv
+2. cd main-backend
 
-3. source venv/bin/activate (for linux/macOS user)
+3. python -m venv
+
+4. source venv/bin/activate (for linux/macOS user)
    \venv\Scripts\activate.bat  (for windows user)
 
-4. pip install -r requirements.txt
+5. pip install -r requirements.txt
 
-5. python manage.py runserver
+6. python manage.py runserver
 
 then run http://localhost:8000 on your browser.
 
 
 Postman collection of the project: https://www.getpostman.com/collections/9371b6bc56762391e6cf
 
+## Fronted
+
+1. git clone https://github.com/codeinpython-org/codeinpython-main.git
+
+2. cd main-fronted
+
+3. npm install
+
+4. npm start
+
+then run http://localhost:3000 on your browser.
 
 
 # BUG REPORT

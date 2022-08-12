@@ -74,8 +74,6 @@ class UserCreateSerializer(serializers.Serializer):
                 raise APIException400({"message": "Invalid email"})
             email = mobile_number
             user = User.objects.create(name=name,username=email, email=mobile_number, mobile_number=None, country_code=None)
-            user.set_password(validated_data['mobile_number'])
-            user.save()
             user.set_password(validated_data['password'])
             user.save()
         else:
@@ -88,8 +86,6 @@ class UserCreateSerializer(serializers.Serializer):
 
             user = User.objects.create(name=name,username=mobile_number, mobile_number=mobile_number, email=None,
                                        country_code=validated_data['country_code'])
-            user.set_password(validated_data['mobile_number'])
-            user.save()
             user.set_password(validated_data['password'])
             user.save()
         payload = jwt_payload_handler(user)

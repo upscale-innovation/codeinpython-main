@@ -105,10 +105,15 @@ celerybeat.pid
 
 # Environments
 vendor/.env
+..venv
 .env
 .venv
 env/
 venv/
+.venv/
+./main-backend/venv
+../main-backend/venv
+main-backend/venv
 ENV/
 env.bak/
 venv.bak/
@@ -131,3 +136,31 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
+
+#Fronted
+
+# dependencies
+..node_modules
+main-fronted/node_modules
+./main-fronted/node_modules
+../main-fronted/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
