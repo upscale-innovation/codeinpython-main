@@ -108,6 +108,7 @@ vendor/.env
 .env
 .venv
 env/
+venv/
 main-backend/venv
 ENV/
 env.bak/
