@@ -141,6 +141,7 @@ dmypy.json
 #Fronted
 
 # dependencies
+..node_modules
 main-fronted/node_modules
 ./main-fronted/node_modules
 ../main-fronted/node_modules
