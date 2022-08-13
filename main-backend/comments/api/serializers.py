@@ -8,6 +8,7 @@ from datetime import datetime
 from notification.models import *
 from django.conf import settings
 from django.core.mail import send_mail
+from vendor.task import send_email_task
 
 class CreateCommentSerializer(ModelSerializer):
     title = serializers.CharField(error_messages={'required': "title can't be blank"})
@@ -42,7 +43,7 @@ class CreateCommentSerializer(ModelSerializer):
                 # subject = context
                 # message = 'Comment: {}'.format(title)
                 # try:
-                #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
                 # except Exception as e:
                 #     raise APIException400({"message": e, 'success': 'False'})
         except Exception as e:
@@ -82,7 +83,7 @@ class CreateChildCommentSerializer(ModelSerializer):
                 # subject = context
                 # message = 'Comment: {}'.format(title)
                 # try:
-                #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
                 # except Exception as e:
                 #     raise APIException400({"message": e, 'success': 'False'})
         except Exception as e:
