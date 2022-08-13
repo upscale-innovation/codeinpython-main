@@ -2,7 +2,6 @@ from django.db.models import Q
 from rest_framework.serializers import *
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from setuptools.config._validate_pyproject import ValidationError
 
 from ..models import *
 from common_utils.exception import APIException400
@@ -12,14 +11,13 @@ from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.conf import settings
-from rest_framework.response import Response
 from twilio.rest import Client
 import os,sys
-from vendor.task import send_email_task
+from vendor.task import send_email_task, send_mobile_task
 
 try:  
    account_sid = os.getenv('account_sid')
-   auth_token =  os.getenv('SECRET_KEY')
+   auth_token =  os.getenv('auth_token')
 except KeyError: 
    print("Please set the environment variable of account_sid and auth_token")
    sys.exit(1)
@@ -167,10 +165,10 @@ class ForgetPasswordSerializer(serializers.Serializer):
             recipient_email = mobile_number
             subject = 'OTP verification mail'
             message = 'Your One Time Password For Verification is : {}'.format(code)
-            # try:
-            #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
-            # except Exception as e:
-            #     raise APIException400({"message": e, 'success': 'False'})
+            try:
+                status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
+            except Exception as e:
+                raise APIException400({"message": e, 'success': 'False'})
         else:
             if 'country_code' not in validated_data:
                 raise APIException400({"message": "country code is required"})
@@ -192,10 +190,10 @@ class ForgetPasswordSerializer(serializers.Serializer):
             message = 'Your One Time Password For Verification is : {}'.format(code)
             formatted_mobile = '{}{}'.format(country_code, mobile_number)
             client = Client(account_sid, auth_token)
-            # try:
-            #     message = client.messages.create(body=message, from_='+15715172033', to=formatted_mobile)
-            # except Exception as e:
-            #     raise APIException400({"message": e, 'success': 'False'})
+            try:
+                message = send_mobile_task.delay(body=message, from_='+17058056223', to=formatted_mobile)
+            except Exception as e:
+                raise APIException400({"message": e, 'success': 'False'})
         payload = jwt_payload_handler(user)
         token = 'JWT ' + jwt_encode_handler(payload)
         validated_data['authorization'] = token
