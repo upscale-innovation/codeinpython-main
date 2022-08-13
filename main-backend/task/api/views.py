@@ -13,6 +13,7 @@ from account.models import User
 from notification.models import *
 from .serializers import *
 from common_utils.exception import APIException400
+from vendor.task import send_email_task
 
 try:  
    account_sid = os.getenv('account_sid')
@@ -144,7 +145,7 @@ class PostBookmarkAPIView(APIView):
                             subject = context
                             message = 'You added the bookmarked of this post'
                             # try:
-                            #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                            #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
                             # except Exception as e:
                             #     raise APIException400({"message": e, 'success': 'False'})
                         return Response({'success' : 'True','message':'bookmarked successfully'},status=200)

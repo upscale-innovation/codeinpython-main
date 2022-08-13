@@ -15,6 +15,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from twilio.rest import Client
 import os,sys
+from vendor.task import send_email_task
 
 try:  
    account_sid = os.getenv('account_sid')
@@ -167,7 +168,7 @@ class ForgetPasswordSerializer(serializers.Serializer):
             subject = 'OTP verification mail'
             message = 'Your One Time Password For Verification is : {}'.format(code)
             # try:
-            #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+            #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
             # except Exception as e:
             #     raise APIException400({"message": e, 'success': 'False'})
         else:

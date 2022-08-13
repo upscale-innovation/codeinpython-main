@@ -13,6 +13,7 @@ from datetime import timedelta, datetime
 import uuid
 from django.utils.timezone import make_aware
 from django.core.mail import send_mail
+from vendor.task import send_email_task
 from django.conf import settings
 from twilio.rest import Client
 from common_utils.exception import APIException400
@@ -148,7 +149,7 @@ class ResendOTPAPIView(APIView):
             subject = 'OTP verification mail'
             message = 'Your One Time Password For Verification is : {}'.format(code)
             # try:
-            #     status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+            #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
             # except Exception as e:
             #     raise APIException400({"message": e, 'success': 'False'})
             return Response({'success': 'True', 'message': 'OTP resend successfully to your registered email id', "OTP":code},

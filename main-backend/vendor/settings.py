@@ -197,6 +197,7 @@ JWT_AUTH = {
   # 'JWT_AUTH_COOKIE': None,
 }
 
+#Email Settings
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
@@ -205,7 +206,16 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 FROM_EMAIL = os.getenv('FROM_EMAIL')
 
-
+#Celery Settings
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ROUTES = {
+    'common_method.celery_tasks.send_mail_shared': {'queue': 'mail_queue'},
+    'common_method.celery_tasks.send_new_notification_shared': {'queue': 'notification_queue'},
+}
 
 # LOGGING = {
 #     'version': 1,
