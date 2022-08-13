@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import *
 from ..models import *
 from django.db.models import Q
-from account.exception import APIException400
+from common_utils.exception import APIException400
 from django.utils.timezone import now
 from datetime import datetime
 from comments.api.serializers import *

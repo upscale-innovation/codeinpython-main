@@ -15,3 +15,14 @@ class Comment(models.Model):
 
     class Meta:
         unique_together = ('id', 'created_on')
+
+class ChildComment(models.Model):
+    title = models.CharField(max_length=250, blank=False, null=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_on = models.DateTimeField(default=now)
+    updated_on = models.DateTimeField(blank=True, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    is_edited = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('id', 'created_on')

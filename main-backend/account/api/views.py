@@ -9,15 +9,14 @@ from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .serializers import *
 from ..models import *
-from account.exception import *
 from datetime import timedelta, datetime
 import uuid
-from account.generate_otp import generateOTP
 from django.utils.timezone import make_aware
 from django.core.mail import send_mail
 from django.conf import settings
 from twilio.rest import Client
-from ..generate_otp import generateOTP
+from common_utils.exception import APIException400
+from common_utils.generate_otp import generateOTP
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER

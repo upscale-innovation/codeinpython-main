@@ -4,10 +4,9 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from setuptools.config._validate_pyproject import ValidationError
 
-from account.exception import *
 from ..models import *
-from account.generate_otp import generateOTP
-from ..exception import APIException400
+from common_utils.exception import APIException400
+from common_utils.generate_otp import generateOTP
 
 from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
