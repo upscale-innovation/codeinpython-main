@@ -4,6 +4,10 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 
 from ..models import *
+from task.models import *
+from comments.models import *
+from task.api.serializers import (PostListSerializer,)
+from comments.api.serializers import (CommentListSerializer,)
 from common_utils.exception import APIException400
 from common_utils.generate_otp import generateOTP
 
@@ -71,9 +75,14 @@ class UserCreateSerializer(serializers.Serializer):
             if len(mobile_number.split('@')) < 2:
                 raise APIException400({"message": "Invalid email"})
             email = mobile_number
-            user = User.objects.create(name=name,username=email, email=mobile_number, mobile_number=None, country_code=None)
-            user.set_password(validated_data['password'])
-            user.save()
+            try:
+                user = User.objects.create(username=email, email=mobile_number, mobile_number=None, country_code=None)
+                user_profile = UserProfile.objects.create(name=name,user=user)
+                user.set_password(validated_data['password'])
+                user.save()
+                user_profile.save()
+            except Exception as e:
+                raise APIException400({'message': e})
         else:
             if 'country_code' not in validated_data:
                 raise APIException400({"message": "country code is required"})
@@ -81,11 +90,15 @@ class UserCreateSerializer(serializers.Serializer):
             country_code = validated_data['country_code']
             if not country_code.split('+')[1].isdigit():
                 raise APIException400({"message": "Invalid Country Code"})
-
-            user = User.objects.create(name=name,username=mobile_number, mobile_number=mobile_number, email=None,
-                                       country_code=validated_data['country_code'])
-            user.set_password(validated_data['password'])
-            user.save()
+            try:
+                user = User.objects.create(username=mobile_number, mobile_number=mobile_number, email=None,
+                                        country_code=validated_data['country_code'])
+                user_profile = UserProfile.objects.create(name=name,user=user)
+                user.set_password(validated_data['password'])
+                user.save()
+                user_profile.save()
+            except Exception as e:
+                raise APIException400({'message': e})
         payload = jwt_payload_handler(user)
         token = 'JWT ' + jwt_encode_handler(payload)
         validated_data['authorization'] = token
@@ -213,8 +226,75 @@ class ResetPasswordSerializer(serializers.Serializer):
         if len(new_password) < 8:
             raise APIException400({'message': 'Password must be at least 8 characters long', 'success': "False"})
         return new_password
-
     def validate_confirm_password(self, confirm_password):
         if len(confirm_password) < 8:
             raise APIException400({'message': 'Password must be at least 8 characters long', 'success': "False"})
         return confirm_password
+
+class UserProfileEditSerializer(ModelSerializer):
+    name = CharField(allow_blank=True)
+    bio = CharField(allow_blank=True)
+    location = CharField(allow_blank=True)
+    website_link = CharField(allow_blank=True)
+    gender = CharField(allow_blank=True)
+    class Meta:
+        model = UserProfile
+        fields= ['name','bio','location','website_link','gender']
+
+    def validate(self,data):
+        gender = data['gender']
+        if not (data['gender'] or data['name'] or data['bio'] or data['location'] or data['website_link'] or data['gender']):
+            raise APIException400({"message":"update required one of these fields","status": "False"})
+        if gender:  
+            if not gender in ['male','female','other']:
+                raise APIException400({"message":"Please provide valid gender type","status": "False"})
+        return data
+    def update(self, instance, validated_data):
+        if not (validated_data['name'] == "" or validated_data['name'] is None):
+            instance.name = validated_data.get('name', instance.name)
+        if not (validated_data['bio'] == "" or validated_data['bio'] is None):
+            instance.bio = validated_data.get('bio', instance.bio)
+        if not (validated_data['location'] == "" or validated_data['location'] is None):
+            instance.location = validated_data.get('location', instance.location)
+        if not (validated_data['website_link'] == "" or validated_data['website_link'] is None):
+            instance.website_link = validated_data.get('website_link', instance.website_link)
+        if not (validated_data['gender'] == "" or validated_data['gender'] is None):
+            instance.gender = validated_data.get('gender', instance.gender)
+        instance.save()
+        return instance
+
+class UserProfileSerializer(ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = "__all__"
+
+
+class UserSerializer(ModelSerializer):
+    userprofile = SerializerMethodField()
+    # question = SerializerMethodField()
+    # comment = SerializerMethodField()
+    total_question_count = SerializerMethodField()
+    total_comment_count = SerializerMethodField()
+    def get_userprofile(self,instance):
+        qs = UserProfile.objects.filter(user__id=instance.id)
+        data = UserProfileSerializer(qs,many=True).data
+        return data
+    # def get_question(self,instance):
+    #     qs = Post.objects.filter(created_by__id=instance.id)
+    #     data = PostListSerializer(qs,many=True).data
+    #     return data
+    # def get_comment(self,instance):
+    #     qs = Comment.objects.filter(created_by__id=instance.id)
+    #     data = CommentListSerializer(qs,many=True).data
+    #     return data
+    def get_total_question_count(self, instance):
+        qs = Post.objects.filter(created_by__id=instance.id).count()
+        return qs
+    def get_total_comment_count(self, instance):
+        qs = Comment.objects.filter(created_by__id=instance.id).count()
+        return qs
+    class Meta:
+        model = User
+        fields = ['email','date_joined', 'mobile_number', 'username','userprofile', 
+                #'comment', #'question',
+                'total_question_count', 'total_comment_count']

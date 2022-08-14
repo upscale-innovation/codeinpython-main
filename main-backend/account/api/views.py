@@ -198,10 +198,8 @@ class VerifyOTP(RetrieveAPIView):
                     token = jwt_encode_handler(payload)
                     token = 'JWT ' + str(token)
                     return Response({"message": "email OTP Verification success", 'token': token,'success': 'True'})
-                else:
-                    return Response({'success': 'False', 'message': 'Invalide verification code'}, status=400)
-            else:
-                return Response({'success': 'False', 'message': 'user does not exist with this email'}, status=400)
+                return Response({'success': 'False', 'message': 'Invalide verification code'}, status=400)
+            return Response({'success': 'False', 'message': 'user does not exist with this email'}, status=400)
         else:
             obj_qs = User.objects.filter(mobile_number__iexact=user.mobile_number)
             if obj_qs.exists() and obj_qs.count() == 1:
@@ -218,12 +216,8 @@ class VerifyOTP(RetrieveAPIView):
                     token = jwt_encode_handler(payload)
                     token = 'JWT ' + str(token)
                     return Response({"message": "mobile OTP Verification success", 'token': token,'success': 'True'})
-                else:
-                    return Response({'success': 'False', 'message': 'Invalide verification code'}, status=400)
-            else:
-                return Response({'success': 'False', 'message': 'user does not exist with this mobile'}, status=400)
-
-
+                return Response({'success': 'False', 'message': 'Invalide verification code'}, status=400)
+            return Response({'success': 'False', 'message': 'user does not exist with this mobile'}, status=400)
 
 
 class ResetPasswordResetAPIView(APIView):
@@ -247,4 +241,56 @@ class ResetPasswordResetAPIView(APIView):
         return Response(serializer.errors, status=400)
 
 
+class UserProfileEditAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def put(self,request,*args,**kwargs):
+        user = request.user
+        _id  = self.request.GET.get('id', None)
+        try:
+            obj=UserProfile.objects.get(user__id=user.id, id=_id)
+        except:
+            return Response({'success':'False','message':'No matched record found',},status=400)
+        user_qs = UserProfile.objects.filter(user__id=user.id)
+        if not user_qs:
+            return Response({'success':'False','message' : 'Only owner can edit his/her profile',},status=400)
+        serializer =  UserProfileEditSerializer(obj,data=request.data,context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            obj.save()
+            return Response({'success' :'True','message' : 'profile edited successfully','data' : serializer.data},status=200)
+        return Response(serializer.errors,status=400)
 
+
+class UserProfileView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, *args, **kwargs):
+        user_id = self.request.GET.get('username', None)
+        user = request.user
+        if user_id:
+            try:
+                queryset = User.objects.filter(username=user_id)
+            except Exception as e:
+                raise APIException400({"message": "user does not exist with this username"})
+        else:
+            return Response({'message':'username is required','success':'False'},status=400)
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        data = serializer.data
+        if data:
+            return Response({'success': 'True','message' : 'Data retrieved successfully','data' : data,},status=200)
+        return Response({'message':'No data available','success':'False'},status=400)
+
+
+class TotalUsersView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, *args, **kwargs):
+        filter = self.request.GET.get('filter', None)
+        user = request.user
+        if filter:
+            queryset = User.objects.all().order_by(filter)
+        else:
+            queryset = User.objects.all()
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        data = serializer.data
+        if data:
+            return Response({'success': 'True','message' : 'Data retrieved successfully','data' : data,},status=200)
+        return Response({'message':'No data available','success':'False'},status=400)

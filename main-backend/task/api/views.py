@@ -235,3 +235,4 @@ class PostLikeAPIView(APIView):
                     return Response({'success' : 'True','message':'like removed successfully'},status=200)
             return Response({'success' : 'True','message':'bad request'},status=200)
         raise APIException400({"message":'bad request on types', "status": "False"})
+

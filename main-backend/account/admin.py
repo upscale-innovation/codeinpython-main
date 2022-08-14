@@ -4,5 +4,5 @@ from django.contrib import admin
 
 from account.models import *
 
-admin.site.register([User, OTPStorage])
+admin.site.register([User, OTPStorage, UserProfile])
 

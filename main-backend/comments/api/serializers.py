@@ -148,10 +148,7 @@ class CommentListSerializer(ModelSerializer):
         data = ChildCommentListSerializer(qs,many=True).data
         return data
     def get_creator_name(self, instance):
-        if instance.created_by.name:
-            return instance.created_by.name
-        else:
-            return instance.created_by.username
+        return instance.created_by.username
     class Meta:
         model = Comment
         fields = "__all__"

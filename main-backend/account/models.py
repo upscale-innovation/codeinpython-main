@@ -5,10 +5,10 @@ from django.db import models
 
 # Create your models here.
 USER_ROLE = (('manager', 'manager'), ('worker', 'worker'), ('admin', 'admin'))
+GENDER = (('male', 'male'), ('female', 'female'), ('other', 'other'))
 
 class User(AbstractUser):
     # common fields
-    name = models.CharField(blank=False, null=True, max_length=30)
     email = models.EmailField(unique=True, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -33,3 +33,15 @@ class OTPStorage(models.Model):
     is_used = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=False)
 
+
+class UserProfile(models.Model):
+    name = models.CharField(blank=True, null=True, max_length=30)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_profile')
+    bio = models.TextField(max_length=300, blank=True, null=True)
+    location = models.CharField(max_length=30, blank=True, null=True)
+    website_link = models.TextField(max_length=100, blank=True, null=True)
+    profile_pic = models.ImageField(blank=True, null=False, upload_to='profile_pic',default='default.jpg')
+    gender = models.CharField(max_length=6, choices=GENDER, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.pk) + '-' + str(self.user.username)
