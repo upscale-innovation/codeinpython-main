@@ -38,14 +38,14 @@ class CreateCommentSerializer(ModelSerializer):
                 notification = NormalNotification.objects.create(
                 notification_by=user, notification_for=obj.post.created_by, notification_type='comment', 
                 context=context, comment_id=obj.id)
-                # from_email = settings.FROM_EMAIL
-                # recipient_email = 'testuser@gmail.com'
-                # subject = context
-                # message = 'Comment: {}'.format(title)
-                # try:
-                #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
-                # except Exception as e:
-                #     raise APIException400({"message": e, 'success': 'False'})
+                from_email = settings.FROM_EMAIL
+                recipient_email = 'testuser@gmail.com'
+                subject = context
+                message = 'Comment: {}'.format(title)
+                try:
+                    status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                except Exception as e:
+                    raise APIException400({"message": e, 'success': 'False'})
         except Exception as e:
             raise APIException400({"message":e, "status": "False"})
         return validated_data
@@ -78,14 +78,14 @@ class CreateChildCommentSerializer(ModelSerializer):
                 notification = NormalNotification.objects.create(
                 notification_by=user, notification_for=obj.comment.post.created_by, notification_type='comment', 
                 context=context, comment_id=obj.comment.id)
-                # from_email = settings.FROM_EMAIL
-                # recipient_email = 'testuser@gmail.com'
-                # subject = context
-                # message = 'Comment: {}'.format(title)
-                # try:
-                #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
-                # except Exception as e:
-                #     raise APIException400({"message": e, 'success': 'False'})
+                from_email = settings.FROM_EMAIL
+                recipient_email = 'testuser@gmail.com'
+                subject = context
+                message = 'Comment: {}'.format(title)
+                try:
+                    status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                except Exception as e:
+                    raise APIException400({"message": e, 'success': 'False'})
         except Exception as e:
             raise APIException400({"message":e, "status": "False"})
         return validated_data
@@ -148,10 +148,7 @@ class CommentListSerializer(ModelSerializer):
         data = ChildCommentListSerializer(qs,many=True).data
         return data
     def get_creator_name(self, instance):
-        if instance.created_by.name:
-            return instance.created_by.name
-        else:
-            return instance.created_by.username
+        return instance.created_by.username
     class Meta:
         model = Comment
         fields = "__all__"

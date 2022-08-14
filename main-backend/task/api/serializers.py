@@ -26,7 +26,6 @@ class CreatePostSerializer(ModelSerializer):
         if not description or description == "":
             raise APIException400({"message":"Please provide description", "status": "False"})
         return data
-
     def create(self,validated_data):
         title        = validated_data['title']
         description        = validated_data['description']
@@ -54,8 +53,10 @@ class PostEditSerializer(ModelSerializer):
             raise APIException400({"message":"Please provide either title or description","status": "False"})
         return data
     def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
+        if not (validated_data['title'] == "" or validated_data['title'] is None):
+            instance.title = validated_data.get('title', instance.title)
+        if not (validated_data['description'] == "" or validated_data['description'] is None):
+            instance.description = validated_data.get('description', instance.description)
         instance.save()
         return instance
 

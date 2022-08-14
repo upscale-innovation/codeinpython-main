@@ -13,7 +13,7 @@ from account.models import User
 from notification.models import *
 from .serializers import *
 from common_utils.exception import APIException400
-from vendor.task import send_email_task
+from vendor.task import send_email_task, send_mobile_task
 
 try:  
    account_sid = os.getenv('account_sid')
@@ -135,19 +135,19 @@ class PostBookmarkAPIView(APIView):
                             message = 'You added the bookmarked of this post'
                             formatted_mobile = '{}{}'.format(user.country_code, user.mobile_number)
                             client = Client(account_sid, auth_token)
-                            # try:
-                            #     message = client.messages.create(body=message, from_='+15715172033', to=formatted_mobile)
-                            # except Exception as e:
-                            #     raise APIException400({"message": e, 'success': 'False'})
+                            try:
+                                message = send_mobile_task.delay(body=message, from_='+15715172033', to=formatted_mobile)
+                            except Exception as e:
+                                raise APIException400({"message": e, 'success': 'False'})
                         else:
                             from_email = settings.FROM_EMAIL
                             recipient_email = user.email
                             subject = context
                             message = 'You added the bookmarked of this post'
-                            # try:
-                            #     status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
-                            # except Exception as e:
-                            #     raise APIException400({"message": e, 'success': 'False'})
+                            try:
+                                status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                            except Exception as e:
+                                raise APIException400({"message": e, 'success': 'False'})
                         return Response({'success' : 'True','message':'bookmarked successfully'},status=200)
                 return Response({'success' : 'True','message':'bad request'},status=400)
             except Exception as e:
@@ -235,3 +235,4 @@ class PostLikeAPIView(APIView):
                     return Response({'success' : 'True','message':'like removed successfully'},status=200)
             return Response({'success' : 'True','message':'bad request'},status=200)
         raise APIException400({"message":'bad request on types', "status": "False"})
+
