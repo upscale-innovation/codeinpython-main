@@ -12,16 +12,35 @@ from django.utils.timezone import now
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+class Category(models.Model):
+    name = models.CharField(max_length=32)
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return f'{self.name}'
+
 POST_STATUS = (('is_open', 'is_open'), ('is_closed', 'is_closed'))
+ARTICLE_TYPES = [
+    ('UN', 'Unspecified'),
+    ('TU', 'Tutorial'),
+    ('QS', 'Question'),
+    ('AR', 'Article'),
+]
+
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
-    description = models.TextField(max_length=1000, blank=False, null=False)
+    description = models.TextField(max_length=1000, blank=True, null=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_on = models.DateTimeField(default=now)
     updated_on = models.DateTimeField(blank=True, null=True)
     slug = models.SlugField(blank=True, null=True, max_length = 100)
     is_edited = models.BooleanField(default=False)
-    post_status	= models.CharField(max_length=10, blank=False, null=True, choices=POST_STATUS, default='is_open')
+    post_status	= models.CharField(max_length=10, blank=True, null=True, choices=POST_STATUS, default='is_open')
+    type = models.CharField(max_length=2, choices=ARTICLE_TYPES, default='UN')
+    categories = models.ManyToManyField(to=Category, blank=True, related_name='categories')
 
     def unique_slug_generator(instance, new_slug=None):
         if new_slug is not None:
@@ -38,6 +57,19 @@ class Post(models.Model):
                     )
             return unique_slug_generator(instance, new_slug=new_slug)
         return slug
+
+    def type_to_string(self):
+        if self.type == 'UN':
+            return 'Unspecified'
+        elif self.type == 'TU':
+            return 'Tutorial'
+        elif self.type == 'QS':
+            return 'Question'
+        elif self.type == 'AR':
+            return 'Article'
+
+    def __str__(self):
+        return f'{self.created_by}: {self.title} ({self.created_on.date()})'
 
 
 class PostFile(models.Model):

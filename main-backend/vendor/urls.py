@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('notification.api.urls'),name='notification_api'),
     path('', include('task.api.urls'),name='task_api'),
     path('', include('comments.api.urls'),name='comments_api'),
+    path('search/', include('search.urls'),name='search_api'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
