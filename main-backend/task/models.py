@@ -32,13 +32,13 @@ ARTICLE_TYPES = [
 
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
-    description = models.TextField(max_length=1000, blank=True, null=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_on = models.DateTimeField(default=now)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_created_by')
+    created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(blank=True, null=True)
     slug = models.SlugField(blank=True, null=True, max_length = 100)
     is_edited = models.BooleanField(default=False)
-    post_status	= models.CharField(max_length=10, blank=True, null=True, choices=POST_STATUS, default='is_open')
+    post_status	= models.CharField(max_length=10, blank=False, null=True, choices=POST_STATUS, default='is_open')
     type = models.CharField(max_length=2, choices=ARTICLE_TYPES, default='UN')
     categories = models.ManyToManyField(to=Category, blank=True, related_name='categories')
 
@@ -73,19 +73,19 @@ class Post(models.Model):
 
 
 class PostFile(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=False)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=False, related_name='postfile')
     file = models.FileField(blank=True, null=True)
-    created_on = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(auto_now_add=True)
 
 class PostImage(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=False)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=False, related_name='postimage')
     image = models.ImageField(blank=True, null=True)
-    created_on = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(auto_now_add=True)
 
 class PostLike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_like')
     liked_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_by')
-    created_on = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('post', 'liked_by')
@@ -94,7 +94,7 @@ class PostLike(models.Model):
 class PostBookmark(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_bookmark')
     bookmark_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmark_by')
-    created_on = models.DateTimeField(default=now)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('post', 'bookmark_by')
