@@ -66,6 +66,11 @@ class PostFilesSerializer(ModelSerializer):
 		model = PostFile
 		fields = ['file']
 
+class CategorySerializer(ModelSerializer):
+	class Meta:
+		model = Category
+		fields = "__all__"
+
 class PostListSerializer(ModelSerializer):
     files = SerializerMethodField()
     comment = SerializerMethodField()

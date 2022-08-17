@@ -40,7 +40,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=300, blank=True, null=True)
     location = models.CharField(max_length=30, blank=True, null=True)
     website_link = models.TextField(max_length=100, blank=True, null=True)
-    profile_pic = models.ImageField(blank=True, null=False, upload_to='profile_pic',default='default.jpg')
+    profile_pic = models.ImageField(blank=True, null=True, upload_to='profile_pic',default='default.jpg')
     gender = models.CharField(max_length=6, choices=GENDER, blank=True, null=True)
 
     def __str__(self):
