@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'notification',
     'task',
     'comments',
+    'search',
     
     #3rd_party
     'rest_framework',
     "corsheaders",
+    'django_elasticsearch_dsl'
 
 ]
 
@@ -215,6 +217,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ROUTES = {
     'common_method.celery_tasks.send_mail_shared': {'queue': 'mail_queue'},
     'common_method.celery_tasks.send_new_notification_shared': {'queue': 'notification_queue'},
+}
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
 }
 
 # LOGGING = {
