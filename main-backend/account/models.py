@@ -36,7 +36,7 @@ class OTPStorage(models.Model):
 
 class UserProfile(models.Model):
     name = models.CharField(blank=True, null=True, max_length=30)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     bio = models.TextField(max_length=300, blank=True, null=True)
     location = models.CharField(max_length=30, blank=True, null=True)
     website_link = models.TextField(max_length=100, blank=True, null=True)
