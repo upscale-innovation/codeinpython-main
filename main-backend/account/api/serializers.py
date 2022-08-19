@@ -273,8 +273,8 @@ class UserSerializer(ModelSerializer):
     userprofile = SerializerMethodField()
     # question = SerializerMethodField()
     # comment = SerializerMethodField()
-    total_question_count = SerializerMethodField()
-    total_comment_count = SerializerMethodField()
+    # total_question_count = SerializerMethodField()
+    # total_comment_count = SerializerMethodField()
     def get_userprofile(self,instance):
         qs = UserProfile.objects.filter(user__id=instance.id)
         data = UserProfileSerializer(qs,many=True).data
@@ -287,14 +287,17 @@ class UserSerializer(ModelSerializer):
     #     qs = Comment.objects.filter(created_by__id=instance.id)
     #     data = CommentListSerializer(qs,many=True).data
     #     return data
-    def get_total_question_count(self, instance):
-        qs = Post.objects.filter(created_by__id=instance.id).count()
-        return qs
-    def get_total_comment_count(self, instance):
-        qs = Comment.objects.filter(created_by__id=instance.id).count()
-        return qs
+    # def get_total_question_count(self, instance):
+    #     qs = Post.objects.filter(created_by__id=instance.id).count()
+    #     return qs
+    # def get_total_comment_count(self, instance):
+    #     qs = Comment.objects.filter(created_by__id=instance.id).count()
+    #     return qs
     class Meta:
         model = User
-        fields = ['email','date_joined', 'mobile_number', 'username','userprofile', 
+        fields = ['id','email','date_joined', 'mobile_number', 'username','userprofile', 
                 #'comment', #'question',
-                'total_question_count', 'total_comment_count']
+                # 'total_question_count', 'total_comment_count'
+                ]
+
+

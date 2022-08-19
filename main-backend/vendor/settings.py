@@ -190,7 +190,11 @@ REST_FRAMEWORK = {
           'rest_framework.authentication.TokenAuthentication',
           'rest_framework.authentication.BasicAuthentication',
       ),
+      'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+      'PAGE_SIZE': 25
   }
+
+
 JWT_AUTH = {
   'JWT_EXPIRATION_DELTA': datetime.timedelta(days=15),
   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=15),

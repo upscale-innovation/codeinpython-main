@@ -11,11 +11,26 @@ Follow the steps to run this project:
 3. python -m venv
 
 4. source venv/bin/activate (for linux/macOS user)
-   \venv\Scripts\activate.bat  (for windows user)
+   
+4. \venv\Scripts\activate.bat (for windows user)
 
 5. pip install -r requirements.txt
 
-6. python manage.py runserver
+[make sure that you configured elastic search on your machine before running the below command]
+
+6. sudo systemctl start elasticsearch.service (for linux/mac users)
+
+6. Go to the folder where your ES is installed.(for windows users)
+
+      Run the commands:
+
+         service.bat
+
+         service install
+
+         service start
+
+7. python manage.py runserver
 
 then run http://localhost:8000 on your browser.
 

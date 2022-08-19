@@ -6,7 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 
 from task.documents import PostDocument, UserDocument, CategoryDocument
-from task.api.serializers import PostListSerializer, CategorySerializer
+from task.api.serializers import ElasticPostListSerializer, CategorySerializer
 from account.api.serializers import UserSerializer
 
 
@@ -64,7 +64,7 @@ class SearchCategories(PaginatedElasticSearchAPIView):
 
 
 class SearchPosts(PaginatedElasticSearchAPIView):
-    serializer_class = PostListSerializer
+    serializer_class = ElasticPostListSerializer
     document_class = PostDocument
 
     def generate_q_expression(self, query):
