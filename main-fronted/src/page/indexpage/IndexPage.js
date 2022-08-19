@@ -1,7 +1,7 @@
 import React from 'react'
-import LeftSide from '../components/LeftSide';
-import RightSide from '../components/RightSide';
-import TextArea from '../components/TextArea';
+import LeftSide from "../../components/common/leftside/LeftSide";
+import RightSide from '../../components/common/rightside/RightSide';
+import TextArea from '../../components/common/textarea/TextArea';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 function IndexPage() {
   return (
