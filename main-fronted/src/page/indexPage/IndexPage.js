@@ -1,7 +1,7 @@
 import React from 'react'
-import LeftSide from '../components/LeftSide';
-import RightSide from '../components/RightSide';
-import TextArea from '../components/TextArea';
+import LeftSide from '../../components/common/leftSide/LeftSide';
+import RightSide from '../../components/common/rightSide/RightSide';
+import TextArea from '../../components/common/textArea/TextArea';
 
 function IndexPage() {
   return (

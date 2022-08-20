@@ -203,10 +203,10 @@ class ForgetPasswordSerializer(serializers.Serializer):
             message = 'Your One Time Password For Verification is : {}'.format(code)
             formatted_mobile = '{}{}'.format(country_code, mobile_number)
             client = Client(account_sid, auth_token)
-            try:
-                message = send_mobile_task.delay(body=message, from_='+17058056223', to=formatted_mobile)
-            except Exception as e:
-                raise APIException400({"message": e, 'success': 'False'})
+            # try:
+            #     message = send_mobile_task.delay(body=message, from_='+17058056223', to=formatted_mobile)
+            # except Exception as e:
+            #     raise APIException400({"message": e, 'success': 'False'})
         payload = jwt_payload_handler(user)
         token = 'JWT ' + jwt_encode_handler(payload)
         validated_data['authorization'] = token

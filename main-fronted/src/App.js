@@ -1,10 +1,10 @@
 // import './App.css';
-import Nav from "./components/Nav";
-import IndexPage from "./page/IndexPage";
-import WelcomePage from "./page/WelcomePage";
-import PostPage from "./page/PostPage";
+import Nav from "./components/common/nav/Nav";
+import IndexPage from "./page/indexPage/IndexPage";
+import WelcomePage from "./page/welcomPage/WelcomePage";
+import PostPage from "./page/postPage/PostPage";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import ContactPage from "./page/ContactPage";
+import ContactPage from "./page/contactPage/ContactPage";
 function App() {
 return (
   <Router>

@@ -1,6 +1,6 @@
 import React from 'react'
-import Contact from "../components/Contact"
-import LeftSide from '../components/LeftSide';
+import Contact from "../../components/contact/Contact"
+import LeftSide from '../../components/common/leftSide/LeftSide';
 function ContactPage() {
   return (
     <div>

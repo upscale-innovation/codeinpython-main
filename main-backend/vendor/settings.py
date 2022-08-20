@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'notification',
     'task',
     'comments',
-    'search',
+    # 'search',
     
     #3rd_party
     'rest_framework',
@@ -73,6 +73,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:4200",
     "http://127.0.0.1:4200",
+      "http://localhost:3000",
+
 ]
 
 CORS_ALLOW_METHODS = [
