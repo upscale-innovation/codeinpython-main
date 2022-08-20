@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 function Nav() {
   return (
     <div>
@@ -47,9 +47,9 @@ function Nav() {
               <a href="#section6">Contact</a>
             </li>
             <li>
-              <a href="https://templatemo.com" class="external">
-                External
-              </a>
+            <Link to='/home'>
+                 Sign In
+              </Link>
             </li>
           </ul>
         </nav>
@@ -66,12 +66,7 @@ function Nav() {
               <em>Your</em> Classroom
             </h2>
             <div>
-              <div class="scroll-to-section">
-               
-                <Link to='/home'>
-                   <button className='btn btn-success btn-lg'>Login .....</button>
-                </Link>
-              </div>
+ 
             </div>
           </div>
         </div>
