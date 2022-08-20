@@ -1,12 +1,12 @@
 import React from 'react'
-import Contact from "../components/Contact"
-import LeftSide from '../components/LeftSide';
+import Leftside from '../../components/common/leftside/LeftSide'
+import Contact from "../../components/contact/Contact";
 function ContactPage() {
   return (
     <div>
       <div className="row">
         <div className="col-1">
-          <LeftSide />
+          <Leftside />
         </div>
         <div className="col-10">
           <Contact />
