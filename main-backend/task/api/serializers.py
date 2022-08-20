@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from datetime import datetime
 from comments.api.serializers import *
 from comments.models import *
+# from account.api.serializers import (UserSerializer,)
+from account.models import User
 
 #Post Serializer
 class CreatePostSerializer(ModelSerializer):
@@ -82,6 +84,19 @@ class PostListSerializer(ModelSerializer):
         qs = Comment.objects.filter(post__id=instance.id)
         data = CommentListSerializer(qs,many=True).data
         return data
+    categories = CategorySerializer(many=True)
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+class ElasticUserSerializer(ModelSerializer):
+	class Meta:
+		model = User
+		fields = ('id', 'username', 'first_name', 'last_name')
+
+class ElasticPostListSerializer(ModelSerializer):
+    created_by = ElasticUserSerializer()
+    categories = CategorySerializer(many=True)
     class Meta:
         model = Post
         fields = "__all__"

@@ -5,8 +5,8 @@ from elasticsearch_dsl import Q
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 
-from task.documents import PostDocument, UserDocument, CategoryDocument
-from task.api.serializers import PostListSerializer, CategorySerializer
+from .documents import PostDocument, UserDocument, CategoryDocument
+from task.api.serializers import ElasticPostListSerializer, CategorySerializer
 from account.api.serializers import UserSerializer
 
 
@@ -32,9 +32,6 @@ class PaginatedElasticSearchAPIView(APIView, LimitOffsetPagination):
             return self.get_paginated_response(serializer.data)
         except Exception as e:
             return HttpResponse(e, status=500)
-
-
-# views
 
 
 class SearchUsers(PaginatedElasticSearchAPIView):
@@ -64,7 +61,7 @@ class SearchCategories(PaginatedElasticSearchAPIView):
 
 
 class SearchPosts(PaginatedElasticSearchAPIView):
-    serializer_class = PostListSerializer
+    serializer_class = ElasticPostListSerializer
     document_class = PostDocument
 
     def generate_q_expression(self, query):
