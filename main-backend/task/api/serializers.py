@@ -9,6 +9,8 @@ from comments.api.serializers import *
 from comments.models import *
 # from account.api.serializers import (UserSerializer,)
 from account.models import User
+from answer.models import *
+from answer.api.serializers import *
 
 #Post Serializer
 class CreatePostSerializer(ModelSerializer):
@@ -76,6 +78,7 @@ class CategorySerializer(ModelSerializer):
 class PostListSerializer(ModelSerializer):
     files = SerializerMethodField()
     comment = SerializerMethodField()
+    answer = SerializerMethodField()
     def get_files(self,instance):
         qs = PostFile.objects.filter(post__id=instance.id)
         data = PostFilesSerializer(qs,many=True).data
@@ -83,6 +86,10 @@ class PostListSerializer(ModelSerializer):
     def get_comment(self,instance):
         qs = Comment.objects.filter(post__id=instance.id)
         data = CommentListSerializer(qs,many=True).data
+        return data
+    def get_answer(self,instance):
+        qs = Answer.objects.filter(post__id=instance.id)
+        data = AnswerSerializer(qs,many=True).data
         return data
     categories = CategorySerializer(many=True)
     class Meta:
