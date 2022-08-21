@@ -24,7 +24,7 @@ const [errorStatus,setErrorStatus]=useState("")
 
 
   const onSubmit = async(data) => {
-    const login= await axios.post("http://localhost:8000/login",{country_code:data.countryCode,mobile_number:data.mobileNumber,password:data.password}).catch(error => setErrorStatus(JSON.parse(error.request.responseText).message))
+    const login= await axios.post("http://localhost:8000/signup",{country_code:data.countryCode,mobile_number:data.mobileNumber,password:data.password,name:data.name}).catch(error => setErrorStatus(JSON.parse(error.request.responseText).message))
     const response= await login.data
    
     if (response.success === true)
@@ -34,20 +34,32 @@ const [errorStatus,setErrorStatus]=useState("")
         navigate('/home')
 
         } 
+    
+    
 }
-
+  
 console.log("error",errorStatus)
   
 
   return (
-    <div className=" max-w-xs  md:max-w-sm w-screen border p-4">
+    <div className=" max-w-xs  md:max-w-lg w-screen border p-4">
       <form className="flex flex-col " onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex  items-center">
-          <div className=" ">
+      <div className="flex flex-grow items-center justify-center pb-4 space-x-2 ">
+            <label className=" whitespace-nowrap pr-2 pt-2">Enter your Name</label>
+            <input
+              type="text"
+              className="border  p-1 w-full "
+              {...register("name")}
+              placeholder=" your name .."
+            />
+        </div>
+        <div className="flex  space-x-3 items-center">
+ 
+          <div className="flex flex-col ">
             <label className="text-sm">Code</label>
             <input
               type="tel"
-              className="border  p-1 w-10 "
+              className="border  p-1  "
               {...register("countryCode")}
               placeholder=" +11"
             />
@@ -65,7 +77,7 @@ console.log("error",errorStatus)
 
         <div className="flex justify-between pt-4 items-center ">
           <label>Password</label>
-          <p  onClick={()=>{navigate("/accoutRecovery")}} className=" text-xs text-yellowBase cursor-pointer">Forgot password ?</p>
+       
         </div>
         <input
           type="password"
@@ -73,7 +85,7 @@ console.log("error",errorStatus)
           {...register("password")}
         />
 
-        <button className=" bg-yellowBase text-white py-2 mt-2">Sign In</button>
+        <button className=" bg-yellowBase text-white py-2 mt-2">Sign Up</button>
       </form>
       {errorStatus && <p className=" text-red-600 pt-4"> Error : {errorStatus}</p> }
       

@@ -9,6 +9,7 @@ import PrivateRoute from './services/PrivateRoute'
 import SignInPage from "./page/SignPage/SignInPage";
 import { useDispatch } from "react-redux";
 import { UserSignIn } from "./redux/userSlice";
+import RecoveryPage from "./page/AccountRecoveryPage/RecoveryPage";
 function App() {
 
   const dispatch=useDispatch()
@@ -24,6 +25,7 @@ return (
         {/* PUBLIC ROUTES */}
         <Route exact path="/" element={<WelcomePage />}/>
         <Route exact path="/signin" element={<SignInPage />}/>
+        <Route exact path="/accoutRecovery" element={<RecoveryPage />}/>
         {/* AUTHENTICATED ROUTES */}
         <Route exact path="/home" element={<PrivateRoute><IndexPage /></PrivateRoute>}/>
         <Route exact path="/post-detail" element={<PostPage />}/>

@@ -5,7 +5,7 @@ import axiosInstance from "../../services/axiosInterceptor";
 import axios from 'axios'
 import { UserSignIn } from "../../redux/userSlice";
 import { useNavigate } from "react-router-dom";
-const FormView = () => {
+const AccountRecoveryform = () => {
 
 
 const dispatch=useDispatch()
@@ -24,14 +24,13 @@ const [errorStatus,setErrorStatus]=useState("")
 
 
   const onSubmit = async(data) => {
-    const login= await axios.post("http://localhost:8000/login",{country_code:data.countryCode,mobile_number:data.mobileNumber,password:data.password}).catch(error => setErrorStatus(JSON.parse(error.request.responseText).message))
+    const login= await axios.post("http://localhost:8000/forget_password",{country_code:data.countryCode,mobile_number:data.mobileNumber}).catch(error => setErrorStatus(JSON.parse(error.request.responseText).message))
     const response= await login.data
    
     if (response.success === true)
     {
-        dispatch(UserSignIn(response.data.authorization));
-        localStorage.setItem("token",JSON.stringify(response.data.authorization))
-        navigate('/home')
+       
+        navigate('/')
 
         } 
 }
@@ -40,9 +39,12 @@ console.log("error",errorStatus)
   
 
   return (
-    <div className=" max-w-xs  md:max-w-sm w-screen border p-4">
+
+ <div className=" max-w-xs  md:max-w-sm w-screen border p-4">
       <form className="flex flex-col " onSubmit={handleSubmit(onSubmit)}>
+        <p className=" text-xs pb-4">Forgot your phone’s password ?  Enter your phone number and we’ll send you a OTP recovery number.</p>
         <div className="flex  items-center">
+            
           <div className=" ">
             <label className="text-sm">Code</label>
             <input
@@ -63,22 +65,20 @@ console.log("error",errorStatus)
           </div>
         </div>
 
-        <div className="flex justify-between pt-4 items-center ">
-          <label>Password</label>
-          <p  onClick={()=>{navigate("/accoutRecovery")}} className=" text-xs text-yellowBase cursor-pointer">Forgot password ?</p>
-        </div>
-        <input
-          type="password"
-          className="border  p-1 mb-4"
-          {...register("password")}
-        />
+ 
 
-        <button className=" bg-yellowBase text-white py-2 mt-2">Sign In</button>
+        <button className=" bg-yellowBase text-white py-2 mt-4">Send Recovery Phone Number</button>
       </form>
       {errorStatus && <p className=" text-red-600 pt-4"> Error : {errorStatus}</p> }
       
     </div>
+
+    
+
+    
+
+   
   );
 };
 
-export default FormView;
+export default AccountRecoveryform;
