@@ -18,7 +18,7 @@ export const userSlice = createSlice({
 
     UserSignIn: (state, action) => {
       state.token=action.payload
-      state.user= jwt_decode(state.token?.access)
+      state.user= jwt_decode(state.token)
      
     
     },

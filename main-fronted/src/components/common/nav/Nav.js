@@ -1,6 +1,12 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import { isTokenAvailable, UserSignOut } from '../../../redux/userSlice';
+
 function Nav() {
+
+  const user = useSelector(isTokenAvailable)
+  const dispatch=useDispatch()
   return (
     <div>
       <header class="main-header clearfix" role="header">
@@ -15,7 +21,9 @@ function Nav() {
         <nav id="menu" class="main-nav" role="navigation">
           <ul class="main-menu">
             <li>
-              <a href="#section1">Home</a>
+            <Link to='/home'>
+                 Home
+              </Link>
             </li>
             <li class="has-submenu">
               <a href="#section2">About Us</a>
@@ -47,9 +55,18 @@ function Nav() {
               <a href="#section6">Contact</a>
             </li>
             <li>
-            <Link to='/home'>
-                 Sign In
-              </Link>
+{ 
+!user ? ( <Link to='/signin'>
+Sign In
+</Link>):(
+ <p onClick={()=>{dispatch(UserSignOut())}} className=' cursor-pointer hover:text-gray-400'>
+ Sign out
+</p>
+)
+
+
+}
+           
             </li>
           </ul>
         </nav>
