@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'task',
     'comments',
     'search',
+    'answer',
     
     #3rd_party
     'rest_framework',
