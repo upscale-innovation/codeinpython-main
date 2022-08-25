@@ -1,7 +1,8 @@
 import React from 'react'
-import LeftSide from '../../components/common/leftside/LeftSide'
-import PostDetail from '../../components/postdetail/PostDetail'
-import RightSide from "../../components/common/rightside/RightSide";
+import LeftSide from '../../components/common/leftSide/LeftSide'
+import PostDetail from '../../components/postDetail/PostDetail'
+import RightSide from "../../components/common/rightSide/RightSide";
+
 function PostPage() {
   return (
     <div>
