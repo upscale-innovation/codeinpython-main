@@ -4,7 +4,7 @@
 ## Backend
 Follow the steps to run this project:
 
-1. git clone https://github.com/codeinpython-org/codeinpython-main.git
+1. git clone https://github.com/upscale-innovation/codeinpython-main.git
 
 2. cd main-backend
 
@@ -39,7 +39,7 @@ Postman collection of the project: https://www.getpostman.com/collections/9371b6
 
 ## Fronted
 
-1. git clone https://github.com/codeinpython-org/codeinpython-main.git
+1. git clone https://github.com/upscale-innovation/codeinpython-main.git
 
 2. cd main-fronted
 
